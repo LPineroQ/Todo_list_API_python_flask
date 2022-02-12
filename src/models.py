@@ -6,7 +6,7 @@ class Todo(db.Model):
     __tablename__ = 'todo'
     id = db.Column(db.Integer, primary_key=True)
     todo = db.Column(db.String(120), nullable=False)
-    status = db.Column(db.Boolean, default=False)
+    status = db.Column(db.Boolean, default=True)
 
     def __repr__(self):
         return '<Todo %r>' % self.id
@@ -14,7 +14,7 @@ class Todo(db.Model):
     def serialize(self):
         return {
             "id": self.id,
-            "email": self.todo,
+            "todo": self.todo,
             "status": self.status
         }
 

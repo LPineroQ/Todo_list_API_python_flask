@@ -42,8 +42,26 @@ def handle_hello():
 @app.route('/todo', methods=['POST'])
 def create_todo():
     body = request.get_json()
-    print(body)
-    return jsonify("Hola estás en el todo list"), 200
+    new_todo = Todo(todo=body['todo'])
+    print(new_todo)
+    db.session.add(new_todo)
+    db.session.commit()
+    return jsonify(new_todo.serialize()), 200
+
+@app.route('/todo/<todo_id>', methods=['GET'])
+def search_todo(todo_id):
+    todo = Todo.query.get(todo_id)
+    print(todo) 
+    return jsonify(todo.serialize())
+
+@app.route('/todo/<todo_id>', methods=['DELETE'])
+def remove_todo(todo_id):
+    todo = Todo.query.get(todo_id)
+    db.session.delete(todo)
+    db.session.commit()
+    print(todo)
+    return jsonify("Eliminado correctamente"), 200
+
 
 # this only runs if `$ python src/main.py` is executed
 if __name__ == '__main__':
